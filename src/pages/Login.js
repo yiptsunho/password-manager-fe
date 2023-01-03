@@ -12,10 +12,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { LOGIN } from '../utils/ApiConst';
-import PasswordContext from '../App'
+import * as ApiConst from '../utils/ApiConst';
+import { PasswordContext } from '../App'
 import axios from 'axios';
-
+import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
 
 function Copyright(props) {
     return (
@@ -30,11 +31,41 @@ function Copyright(props) {
     );
 }
 
+async function getData(url, params, setState) {
+    await axios.get(url, params)
+        .then(response => response.json())
+        .then(data => {
+            return data
+        });
+}
+
+async function login(url, params) {
+    await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application.json' },
+        body: JSON.stringify(params)
+    })
+        .then(response => {
+            console.log(response)
+        });
+}
+
 const theme = createTheme();
 
 function Login(props) {
 
     const { fetchData, setIsLogin } = React.useContext(PasswordContext);
+    const navigate = useNavigate()
+    const [loginId, setLoginId] = useState('')
+    const [password, setPassword] = useState('')
+
+    const handleChangeLoginId = (val) => {
+        setLoginId(val)
+    }
+
+    const handleChangePassword = (val) => {
+        setPassword(val)
+    }
 
     const handleSubmit = (loginId, password) => {
 
@@ -43,12 +74,13 @@ function Login(props) {
             password: password
         }
 
-        axios.post(LOGIN, params)
-            .then(res => {
-                if (res.status === 200) {
-                    setIsLogin(true)
-                }
-            })
+        const res = login(ApiConst.LOGIN, params)
+        if (res) {
+            setIsLogin(true)
+            navigate("/landing")
+        } else {
+            setIsLogin(false)
+        }
 
         // fetchData(LOGIN, params, setIsLogin)
     };
@@ -72,7 +104,7 @@ function Login(props) {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={() => handleSubmit(loginId, password)} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required
@@ -82,6 +114,8 @@ function Login(props) {
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            value={loginId}
+                            onChange={(e) => handleChangeLoginId(e.target.value)}
                         />
                         <TextField
                             margin="normal"
@@ -92,6 +126,8 @@ function Login(props) {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            value={password}
+                            onChange={(e) => handleChangePassword(e.target.value)}
                         />
                         <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
