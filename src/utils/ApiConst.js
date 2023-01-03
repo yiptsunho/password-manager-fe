@@ -1,0 +1,5 @@
+export const LOGIN = '/api/login'
+export const GET_ALL_PASSWORD = '/api/getAllPasswords'
+export const CREATE_NEW_PASSWORD = '/api/createNewPassword'
+export const EDIT_PASSWORD = '/api/editPassword'
+export const DELETE_PASSWORD = '/api/deletePassword'
