@@ -8,11 +8,11 @@ import MyAccount from './pages/MyAccount';
 import Login from './pages/Login';
 import React, { createContext, useState } from 'react';
 
-async function fetchData(url, params, setState) {
-  await fetch(url, params)
-    .then(response => response.json())
-    .then(data => setState(data));
-}
+// async function fetchData(url, params, setState) {
+//   await fetch(url, params)
+//     .then(response => response.json())
+//     .then(data => setState(data));
+// }
 
 export const PasswordContext = createContext();
 
@@ -22,7 +22,7 @@ function App() {
 
   return (
     <Router>
-      <PasswordContext.Provider value={{ fetchData: fetchData, setIsLogin: setIsLogin }}>
+      <PasswordContext.Provider value={{ isLogin: isLogin, setIsLogin: setIsLogin }}>
         {isLogin ? <NavBar /> : null}
         <Routes>
           <Route exact path="/" element={<Login />} />
