@@ -1,6 +1,5 @@
 {
   "name": "password-manager-fe",
-  "proxy": "http://localhost:8081",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

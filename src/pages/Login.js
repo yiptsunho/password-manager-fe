@@ -49,8 +49,10 @@ async function login(url, params, setState) {
     }
 
     if (responseData.status === 200) {
+        console.log(responseData)
         console.log('login success')
     } else {
+        console.log(responseData)
         console.log('login failed')
     }
 
