@@ -31,15 +31,7 @@ function Copyright(props) {
     );
 }
 
-// async function getData(url, params, setState) {
-//     await axios.get(url, params)
-//         .then(response => response.json())
-//         .then(data => {
-//             return data
-//         });
-// }
-
-async function login(url, params, setState) {
+async function login(url, params, setState, navigate) {
     let responseData = null;
 
     try {
@@ -49,21 +41,9 @@ async function login(url, params, setState) {
     }
 
     if (responseData.status === 200) {
-        console.log(responseData)
-        console.log('login success')
-    } else {
-        console.log(responseData)
-        console.log('login failed')
+        setState(true)
+        navigate('/landing')
     }
-
-
-    // axios.post(url, params)
-    //     .then((response) => {
-    //         console.log(response);
-    //     })
-    //     .catch((error) => {
-    //         console.log(error);
-    //     });
 
 }
 
@@ -91,7 +71,7 @@ function Login(props) {
             password: password
         }
 
-        login(ApiConst.LOGIN, params, setIsLogin)
+        login(ApiConst.LOGIN, params, setIsLogin, navigate)
         // const res = login(ApiConst.LOGIN, params, setIsLogin)
         // if (res === true) {
         //     setIsLogin(true)
