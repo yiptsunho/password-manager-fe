@@ -7,31 +7,41 @@ import ManagePassword from './pages/ManagePassword';
 import MyAccount from './pages/MyAccount';
 import Login from './pages/Login';
 import React, { createContext, useState } from 'react';
+import ForgetPassword from './pages/ForgetPassword';
+import CreateNewAccount from './pages/CreateNewAccount';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
-// async function fetchData(url, params, setState) {
-//   await fetch(url, params)
-//     .then(response => response.json())
-//     .then(data => setState(data));
-// }
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 export const PasswordContext = createContext();
 
 function App() {
 
   const [isLogin, setIsLogin] = useState(false);
+  // const [openDialog, setOpenDialog] = useState(false);
 
   return (
-    <Router>
-      <PasswordContext.Provider value={{ isLogin: isLogin, setIsLogin: setIsLogin }}>
-        {isLogin ? <NavBar /> : null}
-        <Routes>
-          <Route exact path="/" element={<Login />} />
-          <Route exact path="/landing" element={<Landing />} />
-          <Route exact path="/managepassword" element={<ManagePassword />} />
-          <Route exact path="/myaccount" element={<MyAccount />} />
-        </Routes>
-      </PasswordContext.Provider>
-    </Router>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Router>
+        <PasswordContext.Provider value={{ isLogin: isLogin, setIsLogin: setIsLogin }}>
+          {isLogin ? <NavBar /> : null}
+          <Routes>
+            <Route exact path="/" element={<Login />} />
+            <Route exact path="/landing" element={<Landing />} />
+            <Route exact path="/managepassword" element={<ManagePassword />} />
+            <Route exact path="/myaccount" element={<MyAccount />} />
+            <Route exact path="/forgotpassword" element={<ForgetPassword />} />
+            <Route exact path="/createnewaccount" element={<CreateNewAccount />} />
+          </Routes>
+        </PasswordContext.Provider>
+      </Router>
+    </ThemeProvider>
   );
 }
 

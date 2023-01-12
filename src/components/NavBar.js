@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,6 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
 import { PasswordContext } from '../App'
+import { useState, useContext } from 'react';
 
 const pages = [
     { name: 'Manage', url: '/managepassword' }
@@ -24,9 +25,9 @@ const settings = [
 ];
 
 function ResponsiveAppBar() {
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
-    const { setIsLogin } = React.useContext(PasswordContext);
+    const [anchorElNav, setAnchorElNav] = useState(null);
+    const [anchorElUser, setAnchorElUser] = useState(null);
+    const { setIsLogin } = useContext(PasswordContext);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);

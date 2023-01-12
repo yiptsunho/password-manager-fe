@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -17,6 +17,7 @@ import { PasswordContext } from '../App'
 import axios from '../utils/axiosInstance';
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
+import CustomDialog from '../components/CustomDialog';
 
 function Copyright(props) {
     return (
@@ -40,9 +41,16 @@ async function login(url, params, setState, navigate) {
         console.error(ex);
     }
 
-    if (responseData.status === 200) {
+    if (responseData && responseData.status === 200) {
         setState(true)
         navigate('/landing')
+    } else {
+        return (
+            <CustomDialog
+                title={'testing title'}
+                content={'testing content'}
+            />
+        )
     }
 
 }
@@ -51,7 +59,7 @@ const theme = createTheme();
 
 function Login(props) {
 
-    const { fetchData, isLogin, setIsLogin } = React.useContext(PasswordContext);
+    const { isLogin, setIsLogin } = React.useContext(PasswordContext);
     const navigate = useNavigate()
     const [loginId, setLoginId] = useState('')
     const [password, setPassword] = useState('')
@@ -72,25 +80,8 @@ function Login(props) {
         }
 
         login(ApiConst.LOGIN, params, setIsLogin, navigate)
-        // const res = login(ApiConst.LOGIN, params, setIsLogin)
-        // if (res === true) {
-        //     setIsLogin(true)
-        //     navigate("/landing")
-        // } else {
-        //     setIsLogin(false)
-        // }
-
-        // fetchData(LOGIN, params, setIsLogin)
-        console.log(params)
+        // return <CustomDialog title={'testing title'} content={'testing contetn'} />;
     };
-
-    // useEffect(() => {
-    //     if (isLogin) {
-    //         console.log("login successful")
-    //     } else {
-    //         console.log("still pending login")
-    //     }
-    // }, [isLogin])
 
     return (
 
@@ -150,12 +141,12 @@ function Login(props) {
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="#" variant="body2">
+                                <Link href="/forgotpassword" variant="body2">
                                     Forgot password?
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/createnewaccount" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>
