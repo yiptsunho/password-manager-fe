@@ -16,7 +16,7 @@ import * as ApiConst from '../utils/ApiConst';
 import { PasswordContext } from '../App'
 import axios from '../utils/axiosInstance';
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import CustomDialog from '../components/CustomDialog';
 
 function Copyright(props) {
@@ -32,7 +32,7 @@ function Copyright(props) {
     );
 }
 
-async function login(url, params, setState, navigate) {
+async function login(url, params, setState, navigate, setOpenDialog) {
     let responseData = null;
 
     try {
@@ -45,12 +45,7 @@ async function login(url, params, setState, navigate) {
         setState(true)
         navigate('/landing')
     } else {
-        return (
-            <CustomDialog
-                title={'testing title'}
-                content={'testing content'}
-            />
-        )
+        setOpenDialog(true)
     }
 
 }
@@ -63,6 +58,9 @@ function Login(props) {
     const navigate = useNavigate()
     const [loginId, setLoginId] = useState('')
     const [password, setPassword] = useState('')
+    const [openDialog, setOpenDialog] = useState(false)
+    const dialogTitle = useRef('Login failed')
+    const dialogContent = useRef('Email or password incorrect')
 
     const handleChangeLoginId = (val) => {
         setLoginId(val)
@@ -79,7 +77,7 @@ function Login(props) {
             password: password
         }
 
-        login(ApiConst.LOGIN, params, setIsLogin, navigate)
+        login(ApiConst.LOGIN, params, setIsLogin, navigate, setOpenDialog)
         // return <CustomDialog title={'testing title'} content={'testing contetn'} />;
     };
 
@@ -151,6 +149,12 @@ function Login(props) {
                                 </Link>
                             </Grid>
                         </Grid>
+                        <CustomDialog
+                            open={openDialog}
+                            setOpen={setOpenDialog}
+                            title={dialogTitle.current}
+                            content={dialogContent.current}
+                        />
                     </Box>
                 </Box>
                 <Copyright sx={{ mt: 8, mb: 4 }} />

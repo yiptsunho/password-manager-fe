@@ -8,38 +8,38 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
 
 function CustomDialog(props) {
-    const [open, setOpen] = useState(true);
-    const { title, content } = props;
+    const { open, setOpen, title, content, leftLabel, leftAction, rightLabel, rightAction } = props;
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
+    const defaultHandleClose = () => {
         setOpen(false);
     };
 
     return (
-        <div>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {title}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        {content}
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>OK</Button>
-                </DialogActions>
-            </Dialog>
-        </div>
+        <Dialog
+            open={open}
+            onClose={rightAction ?? defaultHandleClose}
+            PaperProps={{
+                style: {
+                    borderRadius: 15,
+                    padding: '5px 10px'
+                }
+            }}
+        >
+            <DialogTitle id="alert-dialog-title">
+                {title}
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    {content}
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                {leftAction &&
+                    <Button onClick={leftAction ?? defaultHandleClose}>{leftLabel ?? 'Cancel'}</Button>
+                }
+                <Button onClick={rightAction ?? defaultHandleClose}>{rightLabel ?? 'OK'}</Button>
+            </DialogActions>
+        </Dialog>
     );
 }
 

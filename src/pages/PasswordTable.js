@@ -6,10 +6,11 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Edit from '@mui/icons-material/Edit';
 import Delete from '@mui/icons-material/Delete';
 import Add from '@mui/icons-material/AddCircle';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Check from '@mui/icons-material/Check';
 import Clear from '@mui/icons-material/Clear';
 import Tooltip from '@mui/material/Tooltip';
+import CustomDialog from '../components/CustomDialog';
 
 // const CustomToolbar = () => {
 //     const apiRef = useGridApiContext();
@@ -26,10 +27,16 @@ import Tooltip from '@mui/material/Tooltip';
 function PasswordTable() {
 
     // const [isEditable, setIsEditable] = useState(false)
-    const apiRef = useGridApiContext();
+    // const apiRef = useGridApiContext();
+    const [openDialog, setOpenDialog] = useState(false)
+    const dialogTitle = useRef('')
+    const dialogContent = useRef('')
 
     const handleEdit = () => {
         // setIsEditable(true)
+        setOpenDialog(true)
+        dialogTitle.current = 'Editing title'
+        dialogContent.current = 'Editing content'
     }
 
     const handleDelete = () => {
@@ -97,8 +104,8 @@ function PasswordTable() {
                             : */}
                         <React.Fragment>
                             <Tooltip title="Edit password">
-                                {/* <Button onClick={() => handleEdit()}> */}
-                                <Button onClick={(params) => apiRef.current.startRowEditMode(params.row.id)}>
+                                <Button onClick={() => handleEdit()}>
+                                    {/* <Button onClick={(params) => apiRef.current.startRowEditMode(params.row.id)}> */}
                                     <Edit />
                                 </Button>
                             </Tooltip>
@@ -135,9 +142,12 @@ function PasswordTable() {
                 disableSelectionOnClick
                 editMode="row"
                 experimentalFeatures={{ newEditingApi: true }}
-            // components={{
-            //     Toolbar: CustomToolbar,
-            // }}
+            />
+            <CustomDialog
+                open={openDialog}
+                setOpen={setOpenDialog}
+                title={dialogTitle.current}
+                content={dialogContent.current}
             />
         </Box>
     );
