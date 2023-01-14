@@ -18,18 +18,17 @@ const darkTheme = createTheme({
   },
 });
 
-export const PasswordContext = createContext();
+export const LoginContext = createContext();
 
 function App() {
 
-  const [isLogin, setIsLogin] = useState(false);
-  // const [openDialog, setOpenDialog] = useState(false);
+  const [isLogin, setIsLogin] = useState(window.sessionStorage.getItem('userId') ? true : false);
 
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Router>
-        <PasswordContext.Provider value={{ isLogin: isLogin, setIsLogin: setIsLogin }}>
+        <LoginContext.Provider value={{ isLogin: isLogin, setIsLogin: setIsLogin }}>
           {isLogin ? <NavBar /> : null}
           <Routes>
             <Route exact path="/" element={<Login />} />
@@ -39,7 +38,7 @@ function App() {
             <Route exact path="/forgotpassword" element={<ForgetPassword />} />
             <Route exact path="/createnewaccount" element={<CreateNewAccount />} />
           </Routes>
-        </PasswordContext.Provider>
+        </LoginContext.Provider>
       </Router>
     </ThemeProvider>
   );

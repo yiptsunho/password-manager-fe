@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
 
-function CustomDialog(props) {
+function CustomDialog(props, ref) {
     const { open, setOpen, title, content, leftLabel, leftAction, rightLabel, rightAction } = props;
 
     const defaultHandleClose = () => {
@@ -34,12 +34,12 @@ function CustomDialog(props) {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                {leftAction &&
+                {leftLabel &&
                     <Button onClick={leftAction ?? defaultHandleClose}>{leftLabel ?? 'Cancel'}</Button>
                 }
                 <Button onClick={rightAction ?? defaultHandleClose}>{rightLabel ?? 'OK'}</Button>
             </DialogActions>
-        </Dialog>
+        </Dialog >
     );
 }
 

@@ -1,71 +1,104 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import { DataGrid, GridToolbarContainer, useGridApiContext } from '@mui/x-data-grid';
+import { DataGrid, GridRenderCellParams } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Edit from '@mui/icons-material/Edit';
 import Delete from '@mui/icons-material/Delete';
 import Add from '@mui/icons-material/AddCircle';
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import Check from '@mui/icons-material/Check';
 import Clear from '@mui/icons-material/Clear';
 import Tooltip from '@mui/material/Tooltip';
 import CustomDialog from '../components/CustomDialog';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import { password } from '../utils/Constants';
+import { createNewPassword, editPassword, deletePassword } from '../apis/PasswordApi';
+import { PasswordContext } from './ManagePassword';
 
-// const CustomToolbar = () => {
-//     const apiRef = useGridApiContext();
+function CustomContent(props, ref) {
+    const { passwordProfile, handleChange, categoryList } = props;
 
-//     const handleGoToPage1 = () => apiRef.current.setPage(1);
 
-//     return (
-//         <GridToolbarContainer>
-//             <Button onClick={handleGoToPage1}>Go to page 1</Button>
-//         </GridToolbarContainer>
-//     );
-// };
 
-function PasswordTable() {
+    return (
+        <Box
+            component="form"
+            sx={{
+                '& .MuiTextField-root': { m: 1, width: '25ch' },
+            }}
+            noValidate
+            autoComplete="off"
+            textAlign='center'
+        >
+            <TextField
+                required
+                id="appName"
+                label="Application"
+                onChange={(e) => handleChange(passwordProfile, e.target.id, e.target.value)}
+            />
+            <TextField
+                required
+                id="loginId"
+                label="Username"
+                onChange={(e) => handleChange(passwordProfile, e.target.id, e.target.value)}
+            />
+            <TextField
+                required
+                id="password"
+                label="Password"
+                type="password"
+                onChange={(e) => handleChange(passwordProfile, e.target.id, e.target.value)}
+            />
+            <TextField
+                id="category"
+                select
+                required
+                label="Category"
+                name='category'
+                onChange={(e) => handleChange(passwordProfile, e.target.name, e.target.value)}
+            >
+                {categoryList.map((category) => (
+                    <MenuItem key={category.value} value={category.value}>
+                        {category.label}
+                    </MenuItem>
+                ))}
+            </TextField>
+        </Box>
+    )
+}
 
-    // const [isEditable, setIsEditable] = useState(false)
-    // const apiRef = useGridApiContext();
+function PasswordTable(props) {
+    const { passwords } = props;
     const [openDialog, setOpenDialog] = useState(false)
     const dialogTitle = useRef('')
     const dialogContent = useRef('')
+    const dialogRightAction = useRef('')
+    const { setPasswords } = useContext(PasswordContext);
 
-    const handleEdit = () => {
-        // setIsEditable(true)
-        setOpenDialog(true)
-        dialogTitle.current = 'Editing title'
-        dialogContent.current = 'Editing content'
+    const emptyPasswordProfile = {
+        appName: '',
+        loginId: '',
+        password: '',
+        category: '',
+        userId: window.sessionStorage.getItem('userId')
     }
 
-    const handleDelete = () => {
-
-    }
-
-    const handleConfirmEdit = () => {
-        // call api to update password
-        // setIsEditable(false)
-    }
-
-    const handleCancelEdit = () => {
-        // setIsEditable(false)
-    }
-
-    const columns = [
+    const tableColumns = [
         {
             field: 'id',
             headerName: '#',
             width: 40
         },
         {
-            field: 'application',
+            field: 'appName',
             headerName: 'Application',
             width: 150,
             editable: false,
         },
         {
-            field: 'username',
+            field: 'loginId',
             headerName: 'Username',
             width: 200,
             editable: false,
@@ -85,69 +118,161 @@ function PasswordTable() {
         {
             field: 'actions',
             headerName: 'Actions',
-            renderCell: (() => {
+            renderCell: ((params) => {
                 return (
                     <ButtonGroup variant="text" aria-label="outlined primary button group" >
-                        {/* {isEditable ?
-                            <React.Fragment>
-                                <Tooltip title="Confirm">
-                                    <Button onClick={() => handleConfirmEdit()}>
-                                        <Check />
-                                    </Button>
-                                </Tooltip>
-                                <Tooltip title="Cancel">
-                                    <Button onClick={() => handleCancelEdit()}>
-                                        <Clear />
-                                    </Button>
-                                </Tooltip>
-                            </React.Fragment>
-                            : */}
                         <React.Fragment>
                             <Tooltip title="Edit password">
-                                <Button onClick={() => handleEdit()}>
-                                    {/* <Button onClick={(params) => apiRef.current.startRowEditMode(params.row.id)}> */}
+                                <Button onClick={() => handleEdit(
+                                    // {
+                                    //     id: params.getValue(params.id, 'id'),
+                                    //     appName: params.getValue(params.id, 'appName'),
+                                    //     loginId: params.getValue(params.id, 'loginId'),
+                                    //     password: params.getValue(params.id, 'password'),
+                                    //     category: params.getValue(params.id, 'category')
+                                    // }
+                                )}>
                                     <Edit />
                                 </Button>
                             </Tooltip>
                             <Tooltip title="Delete password">
-                                <Button onClick={() => handleDelete()}>
+                                <Button onClick={() => handleDelete(params.getValue(params.id, 'id'))}>
                                     <Delete />
                                 </Button>
                             </Tooltip>
                         </React.Fragment>
-                        {/* } */}
                     </ButtonGroup >
                 )
             })
         },
     ];
 
-    const rows = [
-        { id: 1, application: 'gitlab', username: 'jackyyip@asl.com.hk', password: '123456', category: 'Work' },
-        { id: 2, application: 'tims', username: 'kccendorser1', password: '654321', category: 'Work' },
-        { id: 3, application: 'ig', username: 'jackyyip@yahoo.com.hk', password: '654321', category: 'Personal' },
-    ];
+    const handleChange = (passwordProfile, field, newValue) => {
+        passwordProfile[field] = newValue
+        console.log(passwordProfile)
+    }
 
+    // TODO: fetch using api
+    const categoryList = [
+        {
+            value: 'work',
+            label: 'Work'
+        },
+        {
+            value: 'game',
+            label: 'Game'
+        },
+        {
+            value: 'personal',
+            label: 'Personal'
+        },
+    ]
+
+    const handleAdd = () => {
+        setOpenDialog(true)
+        dialogTitle.current = password.add.title
+        dialogContent.current = <CustomContent
+            passwordProfile={emptyPasswordProfile}
+            handleChange={handleChange}
+            categoryList={categoryList}
+            ref
+        />
+        dialogRightAction.current = (params) => handleConfirmAdd(params)
+    }
+
+    const handleEdit = (passwordId) => {
+        const originalPasswordProfile = passwords.filter(password => password.id === passwordId)
+        setOpenDialog(true)
+        dialogTitle.current = password.edit.title
+        dialogContent.current = <customContent
+            passwordProfile={originalPasswordProfile}
+            handleChange={handleChange}
+            categoryList={categoryList}
+        />
+        dialogRightAction.current = (params) => handleConfirmEdit(params)
+    }
+
+    const handleDelete = (params) => {
+        setOpenDialog(true)
+        dialogTitle.current = password.delete.title
+        dialogContent.current = password.delete.content
+        dialogRightAction.current = () => handleConfirmDelete(params)
+    }
+
+    const handleConfirmAdd = (passwordProfile) => {
+        const { appName, loginId, password, category } = passwordProfile;
+
+        createNewPassword(
+            {
+                payload: {
+                    appName: appName,
+                    loginId: loginId,
+                    password: password,
+                    category: category,
+                    userId: window.sessionStorage.getItem('userid')
+                },
+                setPasswords: setPasswords
+            })
+        setOpenDialog(false)
+        console.log(`Creating new password with appName = ${appName}, loginId = ${loginId}, password = ${password}, category = ${category},`)
+    }
+
+    const handleConfirmEdit = (passwordProfile) => {
+        const { id, appName, loginId, password, category } = passwordProfile;
+
+        editPassword(
+            {
+                payload: {
+                    id: id,
+                    appName: appName,
+                    loginId: loginId,
+                    password: password,
+                    category: category,
+                    userId: window.sessionStorage.getItem('userid')
+                },
+                setPasswords: setPasswords
+            })
+        setOpenDialog(false)
+        console.log(`Editing password to appName = ${appName}, loginId = ${loginId}, password = ${password}, category = ${category},`)
+    }
+
+    const handleConfirmDelete = (id) => {
+        deletePassword(
+            {
+                payload: {
+                    id: id
+                },
+                setPasswords: setPasswords
+            })
+        setOpenDialog(false)
+        console.log(`Delete password with id = ${id},`)
+    }
+
+    // const getData = () => {
+    //     const newData = refDialog.current
+    //     return newData
+    // }
 
     return (
         <Box sx={{ height: 400, width: '100%' }}>
-            <Button onClick={() => handleEdit()} variant="text">
+            <Button onClick={() => handleAdd()} variant="text">
                 <Add />
             </Button>
             <DataGrid
-                rows={rows}
-                columns={columns}
+                rows={passwords}
+                columns={tableColumns}
                 pageSize={5}
                 rowsPerPageOptions={[5]}
                 disableSelectionOnClick
-                editMode="row"
-                experimentalFeatures={{ newEditingApi: true }}
             />
             <CustomDialog
                 open={openDialog}
                 setOpen={setOpenDialog}
                 title={dialogTitle.current}
                 content={dialogContent.current}
+                rightLabel='Confirm'
+                rightAction={dialogRightAction.current}
+                leftLabel='Cancel'
             />
         </Box>
     );

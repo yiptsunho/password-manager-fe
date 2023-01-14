@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
-import { PasswordContext } from '../App'
+import { LoginContext } from '../App'
 import { useState, useContext } from 'react';
 
 const pages = [
@@ -27,7 +27,7 @@ const settings = [
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
-    const { setIsLogin } = useContext(PasswordContext);
+    const { setIsLogin } = useContext(LoginContext);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -50,6 +50,8 @@ function ResponsiveAppBar() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const displayName = window.sessionStorage.getItem('displayName')
 
     return (
         <AppBar position="static">
@@ -147,10 +149,16 @@ function ResponsiveAppBar() {
                         ))}
                     </Box>
 
+                    <Box margin={2}>
+                        <label>
+                            {`Hi, ${displayName}!`}
+                        </label>
+                    </Box>
+
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                <Avatar alt={displayName} src="/static/images/avatar/2.jpg" />
                             </IconButton>
                         </Tooltip>
                         <Menu

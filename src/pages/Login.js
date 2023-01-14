@@ -13,11 +13,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as ApiConst from '../utils/ApiConst';
-import { PasswordContext } from '../App'
-import axios from '../utils/axiosInstance';
+import { LoginContext } from '../App'
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import CustomDialog from '../components/CustomDialog';
+import { login } from '../apis/UserApi'
 
 function Copyright(props) {
     return (
@@ -32,35 +32,21 @@ function Copyright(props) {
     );
 }
 
-async function login(url, params, setState, navigate, setOpenDialog) {
-    let responseData = null;
-
-    try {
-        responseData = await axios.post(url, params);
-    } catch (ex) {
-        console.error(ex);
-    }
-
-    if (responseData && responseData.status === 200) {
-        setState(true)
-        navigate('/landing')
-    } else {
-        setOpenDialog(true)
-    }
-
-}
-
 const theme = createTheme();
 
 function Login(props) {
 
-    const { isLogin, setIsLogin } = React.useContext(PasswordContext);
+    const { isLogin, setIsLogin } = useContext(LoginContext);
     const navigate = useNavigate()
     const [loginId, setLoginId] = useState('')
     const [password, setPassword] = useState('')
     const [openDialog, setOpenDialog] = useState(false)
     const dialogTitle = useRef('Login failed')
     const dialogContent = useRef('Email or password incorrect')
+
+    useEffect(() => {
+        window.sessionStorage.clear()
+    }, [])
 
     const handleChangeLoginId = (val) => {
         setLoginId(val)
@@ -71,14 +57,12 @@ function Login(props) {
     }
 
     const handleSubmit = (loginId, password) => {
-
         const params = {
             loginId: loginId,
             password: password
         }
 
-        login(ApiConst.LOGIN, params, setIsLogin, navigate, setOpenDialog)
-        // return <CustomDialog title={'testing title'} content={'testing contetn'} />;
+        login(params, setIsLogin, navigate, setOpenDialog)
     };
 
     return (
