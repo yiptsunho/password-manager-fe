@@ -11,6 +11,8 @@ import ForgetPassword from './pages/ForgetPassword';
 import CreateNewAccount from './pages/CreateNewAccount';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import EditPassword from './pages/EditPassword';
+import CreateNewPassword from './pages/CreateNewPassword';
 
 const darkTheme = createTheme({
   palette: {
@@ -27,20 +29,20 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Router>
-        <LoginContext.Provider value={{ isLogin: isLogin, setIsLogin: setIsLogin }}>
-          {isLogin ? <NavBar /> : null}
-          <Routes>
-            <Route exact path="/" element={<Login />} />
-            <Route exact path="/landing" element={<Landing />} />
-            <Route exact path="/managepassword" element={<ManagePassword />} />
-            <Route exact path="/myaccount" element={<MyAccount />} />
-            <Route exact path="/forgotpassword" element={<ForgetPassword />} />
-            <Route exact path="/createnewaccount" element={<CreateNewAccount />} />
-          </Routes>
-        </LoginContext.Provider>
-      </Router>
-    </ThemeProvider>
+      <LoginContext.Provider value={{ isLogin: isLogin, setIsLogin: setIsLogin }}>
+        {isLogin ? <NavBar /> : null}
+        <Routes>
+          <Route exact path="/" element={<Login />} />
+          <Route exact path="/landing" element={<Landing />} />
+          <Route exact path="/managepassword" element={<ManagePassword />} />
+          <Route exact path="/myaccount" element={<MyAccount />} />
+          <Route exact path="/forgotpassword" element={<ForgetPassword />} />
+          <Route exact path="/createnewaccount" element={<CreateNewAccount />} />
+          <Route exact path="/createnewpassword" element={<CreateNewPassword />} />
+          <Route exact path="/editpassword" element={<EditPassword />} />
+        </Routes>
+      </LoginContext.Provider>
+    </ThemeProvider >
   );
 }
 
