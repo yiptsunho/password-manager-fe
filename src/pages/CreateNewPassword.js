@@ -25,9 +25,11 @@ function CreateNewPassword(props) {
     }
 
     return (
-        <PasswordForm
-            handleSubmit={handleSubmitAdd}
-        />
+        <div className="container">
+            <PasswordForm
+                handleSubmit={handleSubmitAdd}
+            />
+        </div>
     )
 }
 
