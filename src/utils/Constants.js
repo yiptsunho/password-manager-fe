@@ -1,12 +1,14 @@
-export const password = {
-    add: {
-        title: 'Add password',
+export const PASSWORD = {
+    ADD: {
+        TITLE: 'Add password',
     },
-    edit: {
-        title: 'Edit password',
+    EDIT: {
+        TITLE: 'Edit password',
     },
-    delete: {
-        title: 'Delete password',
-        content: 'Are you sure you want to delete this password? It cannot be recovered in the future.'
+    DELETE: {
+        TITLE: 'Delete password',
+        CONTENT: 'Are you sure you want to delete this password? It cannot be recovered in the future.'
     }
+    ,
+    WARNING: 'Warning'
 }

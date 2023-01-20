@@ -1,5 +1,6 @@
 import axios from '../utils/axiosInstance';
 import * as ApiConst from '../utils/ApiConst'
+import { Navigate } from 'react-router-dom';
 
 export async function getAllPasswords(params, setState) {
     let responseData = null;
@@ -12,6 +13,7 @@ export async function getAllPasswords(params, setState) {
 
     if (responseData && responseData.status === 200) {
         setState(responseData.data)
+
     }
 
 }
@@ -27,7 +29,7 @@ export async function createNewPassword(params) {
     }
 
     if (responseData && responseData.status === 200) {
-        getAllPasswords({ userId: window.sessionStorage.getItem('userId') }, setPasswords)
+        // do sth
     }
 
 }
@@ -43,7 +45,7 @@ export async function editPassword(params) {
     }
 
     if (responseData && responseData.status === 200) {
-        getAllPasswords({ userId: window.sessionStorage.getItem('userId') }, setPasswords)
+        // do sth
     }
 
 }
@@ -59,7 +61,7 @@ export async function deletePassword(params) {
     }
 
     if (responseData && responseData.status === 200) {
-        getAllPasswords({ userId: window.sessionStorage.getItem('userId') }, setPasswords)
+        // do sth
     }
 
 }

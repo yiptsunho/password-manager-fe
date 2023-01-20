@@ -9,10 +9,14 @@ import Add from '@mui/icons-material/AddCircle';
 import { useState, useRef, useContext } from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import CustomDialog from '../components/CustomDialog';
-import { password } from '../utils/Constants';
+import { PASSWORD } from '../utils/Constants';
 import { deletePassword } from '../apis/PasswordApi';
 import { PasswordContext } from './ManagePassword';
 import { useNavigate } from 'react-router-dom';
+import { IconButton } from '@mui/material';
+import SportsEsports from '@mui/icons-material/SportsEsports';
+import Work from '@mui/icons-material/Work';
+import Person from '@mui/icons-material/Person';
 
 function PasswordTable(props) {
     const { passwords } = props;
@@ -27,40 +31,46 @@ function PasswordTable(props) {
         {
             field: 'id',
             headerName: '#',
-            width: 40
+            // width: 40,
+            flex: 0.5
         },
         {
             field: 'appName',
             headerName: 'Application',
-            width: 150,
+            // width: 150,
+            flex: 1,
             editable: false,
         },
         {
             field: 'loginId',
             headerName: 'Username',
-            width: 200,
+            // width: 200,
+            flex: 1,
             editable: false,
         },
         {
             field: 'password',
             headerName: 'Password',
-            width: 110,
+            // width: 110,
+            flex: 1,
             editable: false,
         },
         {
             field: 'category',
             headerName: 'Category',
-            width: 100,
+            // width: 100,
+            flex: 1,
             editable: false,
         },
         {
             field: 'actions',
             headerName: 'Actions',
+            flex: 0.5,
             renderCell: ((params) => {
                 return (
                     <ButtonGroup variant="text" aria-label="outlined primary button group" >
                         <React.Fragment>
-                            <Tooltip title="Edit password">
+                            <Tooltip title="Edit">
                                 <Button onClick={() => handleEdit(
                                     {
                                         id: params.getValue(params.id, 'id'),
@@ -73,7 +83,7 @@ function PasswordTable(props) {
                                     <Edit />
                                 </Button>
                             </Tooltip>
-                            <Tooltip title="Delete password">
+                            <Tooltip title="Delete">
                                 <Button onClick={() => handleDelete(params.getValue(params.id, 'id'))}>
                                     <Delete />
                                 </Button>
@@ -93,15 +103,15 @@ function PasswordTable(props) {
         navigate('/editpassword', {
             state: {
                 data: data,
-                setPasswords: setPasswords
+                // setPasswords: setPasswords
             }
         })
     }
 
     const handleDelete = (params) => {
         setOpenDialog(true)
-        dialogTitle.current = password.delete.title
-        dialogContent.current = password.delete.content
+        dialogTitle.current = PASSWORD.DELETE.TITLE
+        dialogContent.current = PASSWORD.DELETE.CONTENT
         dialogRightAction.current = () => handleConfirmDelete(params)
     }
 
@@ -110,18 +120,35 @@ function PasswordTable(props) {
             {
                 payload: {
                     id: id
-                },
-                setPasswords: setPasswords
+                }
             })
         setOpenDialog(false)
         console.log(`Delete password with id = ${id},`)
+        window.location.reload(false)
     }
 
     return (
-        <Box sx={{ height: 400, width: '100%' }}>
-            <Button onClick={() => handleAdd()} variant="text">
-                <Add />
-            </Button>
+        <React.Fragment>
+            <Tooltip title="Add">
+                <IconButton onClick={() => handleAdd()} color='primary'>
+                    <Add />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Game">
+                <IconButton onClick={() => handleAdd()} color='primary'>
+                    <SportsEsports />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Add">
+                <IconButton onClick={() => handleAdd()} color='primary'>
+                    <Work />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Add">
+                <IconButton onClick={() => handleAdd()} color='primary'>
+                    <Person />
+                </IconButton>
+            </Tooltip>
             <DataGrid
                 rows={passwords}
                 columns={tableColumns}
@@ -138,7 +165,7 @@ function PasswordTable(props) {
                 rightAction={dialogRightAction.current}
                 leftLabel='Cancel'
             />
-        </Box>
+        </React.Fragment>
     );
 }
 
