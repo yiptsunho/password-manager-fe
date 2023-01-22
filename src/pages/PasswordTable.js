@@ -6,7 +6,7 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import Edit from '@mui/icons-material/Edit';
 import Delete from '@mui/icons-material/Delete';
 import Add from '@mui/icons-material/AddCircle';
-import { useState, useRef, useContext } from 'react';
+import { useState, useRef, useContext, useEffect } from 'react';
 import Tooltip from '@mui/material/Tooltip';
 import CustomDialog from '../components/CustomDialog';
 import { PASSWORD } from '../utils/Constants';
@@ -17,15 +17,21 @@ import { IconButton } from '@mui/material';
 import SportsEsports from '@mui/icons-material/SportsEsports';
 import Work from '@mui/icons-material/Work';
 import Person from '@mui/icons-material/Person';
+import Others from '@mui/icons-material/Pending';
 
 function PasswordTable(props) {
     const { passwords } = props;
+    const [passwordsFiltered, setpasswordsFiltered] = useState([])
     const [openDialog, setOpenDialog] = useState(false)
     const dialogTitle = useRef('')
     const dialogContent = useRef('')
     const dialogRightAction = useRef('')
     const { setPasswords } = useContext(PasswordContext);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        setpasswordsFiltered(passwords)
+    }, [passwords])
 
     const tableColumns = [
         {
@@ -127,6 +133,15 @@ function PasswordTable(props) {
         window.location.reload(false)
     }
 
+    const handleFilterPassword = (category) => {
+        let newData = passwords
+        if (category !== 'all') {
+            newData = newData.filter(password => password.category === category)
+        }
+
+        setpasswordsFiltered(newData)
+    }
+
     return (
         <React.Fragment>
             <Tooltip title="Add">
@@ -135,22 +150,32 @@ function PasswordTable(props) {
                 </IconButton>
             </Tooltip>
             <Tooltip title="Game">
-                <IconButton onClick={() => handleAdd()} color='primary'>
+                <IconButton onClick={() => handleFilterPassword('game')} color='primary'>
                     <SportsEsports />
                 </IconButton>
             </Tooltip>
-            <Tooltip title="Add">
-                <IconButton onClick={() => handleAdd()} color='primary'>
+            <Tooltip title="Work">
+                <IconButton onClick={() => handleFilterPassword('work')} color='primary'>
                     <Work />
                 </IconButton>
             </Tooltip>
-            <Tooltip title="Add">
-                <IconButton onClick={() => handleAdd()} color='primary'>
+            <Tooltip title="Personal">
+                <IconButton onClick={() => handleFilterPassword('personal')} color='primary'>
                     <Person />
                 </IconButton>
             </Tooltip>
+            <Tooltip title="Others">
+                <IconButton onClick={() => handleFilterPassword('others')} color='primary'>
+                    <Others />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Reset filter">
+                <Button onClick={() => handleFilterPassword('all')} color='primary'>
+                    Reset
+                </Button>
+            </Tooltip>
             <DataGrid
-                rows={passwords}
+                rows={passwordsFiltered}
                 columns={tableColumns}
                 pageSize={5}
                 rowsPerPageOptions={[5]}

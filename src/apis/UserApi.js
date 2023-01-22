@@ -25,7 +25,7 @@ export async function createNewAccount(params, setOpenDialog, dialogTitle, dialo
     let responseData = null;
 
     try {
-        responseData = await axios.post(ApiConst.CREATE_NEW_ACCOUNT, params);
+        responseData = await axios.post(ApiConst.USER_API, params);
     } catch (ex) {
         console.error(ex);
     }
@@ -48,7 +48,7 @@ export async function editAccount(params, setState, navigate, setOpenDialog) {
     let responseData = null;
 
     try {
-        responseData = await axios.put(ApiConst.EDIT_ACCOUNT, params);
+        responseData = await axios.put(ApiConst.USER_API, params);
     } catch (ex) {
         console.error(ex);
     }

@@ -4,7 +4,6 @@ import { getAllPasswords } from '../apis/PasswordApi';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Container from '@mui/material/Container';
-import GeneratePassword from './GeneratePassword';
 import { Box } from '@mui/system';
 
 const theme = createTheme();
@@ -30,14 +29,6 @@ function ManagePassword() {
                             passwords={passwords}
                         />
                     </Box>
-                </Container>
-                <br />
-                <br />
-                <br />
-                <br />
-                <Container maxWidth="sm">
-                    <h1>You can generate your own customized password here!</h1>
-                    <GeneratePassword />
                 </Container>
             </ThemeProvider>
         </PasswordContext.Provider>

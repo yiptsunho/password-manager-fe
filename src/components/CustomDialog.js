@@ -6,6 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useState } from 'react';
+import { Typography } from '@mui/material';
 
 function CustomDialog(props, ref) {
     const { open, setOpen, title, content, leftLabel, leftAction, rightLabel, rightAction } = props;
@@ -30,7 +31,10 @@ function CustomDialog(props, ref) {
             </DialogTitle>
             <DialogContent>
                 <DialogContentText id="alert-dialog-description">
-                    {content}
+                    <Typography
+                        style={{ whiteSpace: 'pre-wrap' }}>
+                        {content}
+                    </Typography>
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

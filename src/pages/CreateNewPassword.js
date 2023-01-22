@@ -7,6 +7,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import CustomDialog from '../components/CustomDialog';
 import { PASSWORD } from '../utils/Constants'
+import GeneratePassword from '../components/GeneratePassword';
 
 const theme = createTheme();
 
@@ -69,6 +70,14 @@ function CreateNewPassword(props) {
                     handleSubmit={handleSubmitAdd}
                     formTitle='Create New Password'
                 />
+                <br />
+                <br />
+                <br />
+                <br />
+                <Container maxWidth="sm">
+                    <h1>You can generate your own customized password here!</h1>
+                    <GeneratePassword />
+                </Container>
                 <CustomDialog
                     open={openDialog}
                     setOpen={setOpenDialog}

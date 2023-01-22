@@ -12,3 +12,10 @@ export const PASSWORD = {
     ,
     WARNING: 'Warning'
 }
+
+export const CHAR = {
+    UPPERCASE: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    LOWERCASE: "abcdefghijklmnopqrstuvwxyz",
+    NUMBER: "0123456789",
+    SYMBOL: "!@#$%^&*()-=,./\\|[]{}<>?`~",
+}

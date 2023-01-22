@@ -6,7 +6,7 @@ export async function getAllPasswords(params, setState) {
     let responseData = null;
 
     try {
-        responseData = await axios.get(ApiConst.GET_ALL_PASSWORD, { params: params });
+        responseData = await axios.get(ApiConst.PASSWORD_PROFILE_API, { params: params });
     } catch (ex) {
         console.error(ex);
     }
@@ -23,7 +23,7 @@ export async function createNewPassword(params) {
     const { payload, setPasswords } = params;
 
     try {
-        responseData = await axios.post(ApiConst.CREATE_NEW_PASSWORD, payload);
+        responseData = await axios.post(ApiConst.PASSWORD_PROFILE_API, payload);
     } catch (ex) {
         console.error(ex);
     }
@@ -39,7 +39,7 @@ export async function editPassword(params) {
     const { payload, setPasswords } = params;
 
     try {
-        responseData = await axios.put(ApiConst.EDIT_PASSWORD, payload);
+        responseData = await axios.put(ApiConst.PASSWORD_PROFILE_API, payload);
     } catch (ex) {
         console.error(ex);
     }
@@ -55,7 +55,7 @@ export async function deletePassword(params) {
     const { payload, setPasswords } = params;
 
     try {
-        responseData = await axios.delete(ApiConst.DELETE_PASSWORD, { params: payload });
+        responseData = await axios.delete(ApiConst.PASSWORD_PROFILE_API, { params: payload });
     } catch (ex) {
         console.error(ex);
     }

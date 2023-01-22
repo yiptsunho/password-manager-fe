@@ -1,8 +1,3 @@
-export const API_SITE = 'http://localhost:8081'
-export const LOGIN = '/api/login'
-export const GET_ALL_PASSWORD = '/api/getAllPasswords'
-export const CREATE_NEW_PASSWORD = '/api/createNewPassword'
-export const EDIT_PASSWORD = '/api/editPassword'
-export const DELETE_PASSWORD = '/api/deletePassword'
-export const CREATE_NEW_ACCOUNT = '/api/createNewUser'
-export const EDIT_ACCOUNT = '/api/editUser'
+export const USER_API = '/api/v1/user'
+export const LOGIN = `${USER_API}/login`
+export const PASSWORD_PROFILE_API = '/api/v1/passwordProfile'
