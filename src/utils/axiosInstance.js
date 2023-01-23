@@ -1,4 +1,9 @@
-import _axios from "axios"
+import _axios from "axios";
+
+const getToken = () => {
+
+    return (window.localStorage.getItem('token'))
+}
 
 const axios = (baseURL) => {
     //建立一個自定義的axios

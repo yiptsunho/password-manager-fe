@@ -12,8 +12,9 @@ export async function login(params, setState, navigate, setOpenDialog) {
 
     if (responseData && responseData.status === 200) {
         setState(true)
-        window.sessionStorage.setItem('userId', responseData.data.id)
+        window.sessionStorage.setItem('userId', responseData.data.userId)
         window.sessionStorage.setItem('displayName', responseData.data.displayName)
+        axios.defaults.headers.common['Authorization'] = `Bearer ${responseData.data.token}`;
         navigate('/landing')
     } else {
         setOpenDialog(true)
