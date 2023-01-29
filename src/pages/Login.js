@@ -36,7 +36,7 @@ const theme = createTheme();
 
 function Login(props) {
 
-    const { isLogin, setIsLogin } = useContext(LoginContext);
+    const { isLogin, setIsLogin, refreshToken } = useContext(LoginContext);
     const navigate = useNavigate()
     const [loginId, setLoginId] = useState('')
     const [password, setPassword] = useState('')
@@ -62,7 +62,7 @@ function Login(props) {
             password: password
         }
 
-        login(params, setIsLogin, navigate, setOpenDialog)
+        login(params, setIsLogin, navigate, setOpenDialog, refreshToken)
     };
 
     return (

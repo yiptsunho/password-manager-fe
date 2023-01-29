@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import Landing from './pages/Landing';
 import ManagePassword from './pages/ManagePassword';
@@ -13,6 +13,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import EditPassword from './pages/EditPassword';
 import CreateNewPassword from './pages/CreateNewPassword';
+import { refreshSession } from './apis/UserApi';
 
 const darkTheme = createTheme({
   palette: {
@@ -25,11 +26,31 @@ export const LoginContext = createContext();
 function App() {
 
   const [isLogin, setIsLogin] = useState(window.sessionStorage.getItem('userId') ? true : false);
+  const [openDialog, setOpenDialog] = useState(false)
+  const refreshToken = useRef('')
+  const navigate = useNavigate()
+
+  const refreshCountdown = setInterval(() => {
+    handleOpenRefreshDialog()
+  }, 1000 * 60 * 10);
+
+  const handleOpenRefreshDialog = () => {
+    setOpenDialog(true)
+  }
+
+  const handleClickLogout = () => {
+    setIsLogin(false)
+    navigate('/')
+  }
+
+  const handleClickRefresh = () => {
+    refreshSession(refreshToken.current, navigate, refreshToken)
+  }
 
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <LoginContext.Provider value={{ isLogin: isLogin, setIsLogin: setIsLogin }}>
+      <LoginContext.Provider value={{ isLogin: isLogin, setIsLogin: setIsLogin, refreshToken: refreshToken }}>
         {isLogin ? <NavBar /> : null}
         <Routes>
           <Route exact path="/" element={<Login />} />
@@ -41,6 +62,16 @@ function App() {
           <Route exact path="/createnewpassword" element={<CreateNewPassword />} />
           <Route exact path="/editpassword" element={<EditPassword />} />
         </Routes>
+        <CustomDialog
+          open={openDialog}
+          setOpen={setOpenDialog}
+          title='Timeout'
+          content='Please refresh your token to stay logged in'
+          rightLabel='Refresh token'
+          rightAction={handleClickRefresh}
+          leftLabel='Logout'
+          leftAction={handleClickLogout}
+        />
       </LoginContext.Provider>
     </ThemeProvider >
   );

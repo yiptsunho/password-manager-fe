@@ -1,7 +1,7 @@
 import axios from '../utils/axiosInstance';
 import * as ApiConst from '../utils/ApiConst'
 
-export async function login(params, setState, navigate, setOpenDialog) {
+export async function login(params, setState, navigate, setOpenDialog, refreshToken) {
     let responseData = null;
 
     try {
@@ -15,9 +15,30 @@ export async function login(params, setState, navigate, setOpenDialog) {
         window.sessionStorage.setItem('userId', responseData.data.userId)
         window.sessionStorage.setItem('displayName', responseData.data.displayName)
         axios.defaults.headers.common['Authorization'] = `Bearer ${responseData.data.token}`;
+        refreshToken.current = responseData.data.refreshToken
         navigate('/landing')
     } else {
         setOpenDialog(true)
+    }
+
+}
+
+export async function refreshSession(params, navigate, refreshToken) {
+    let responseData = null;
+
+    try {
+        responseData = await axios.post(ApiConst.REFRESH_SESSION, params);
+    } catch (ex) {
+        console.error(ex);
+    }
+
+    if (responseData && responseData.status === 200) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${responseData.data.token}`;
+        refreshToken.current = responseData.data.refreshToken
+        window.location.reload(false)
+    } else {
+        window.sessionStorage.clear()
+        navigate('/')
     }
 
 }
