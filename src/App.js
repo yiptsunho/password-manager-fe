@@ -34,7 +34,11 @@ function App() {
 
   const refreshCountdown = setInterval(() => {
     handleOpenRefreshDialog()
-  }, 1000 * 60 * 10);
+  }, 1000 * 60 * 1);
+
+  const clearPreviousRefreshCountdown = () => {
+    clearInterval(refreshCountdown)
+  }
 
   const handleOpenRefreshDialog = () => {
     setOpenDialog(true)
@@ -44,6 +48,8 @@ function App() {
     delete axios.defaults.headers.common["Authorization"]
     setIsLogin(false)
     navigate('/')
+    setOpenDialog(false)
+    clearPreviousRefreshCountdown()
   }
 
   const handleClickRefresh = () => {
@@ -53,14 +59,16 @@ function App() {
       password: "123456"
     }
 
-    refreshSession(params, navigate, refreshToken, setIsLogin)
+    refreshSession(params, navigate, refreshToken, setIsLogin, clearPreviousRefreshCountdown)
+    setOpenDialog(false)
+    clearPreviousRefreshCountdown()
   }
 
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <LoginContext.Provider value={{ isLogin: isLogin, setIsLogin: setIsLogin, refreshToken: refreshToken }}>
-        {isLogin ? <NavBar /> : null}
+        {isLogin ? <NavBar clearPreviousRefreshCountdown={clearPreviousRefreshCountdown} /> : null}
         <Routes>
           <Route exact path="/" element={<Login />} />
           <Route exact path="/landing" element={<Landing handleClickRefresh={handleClickRefresh} />} />

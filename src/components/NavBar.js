@@ -15,6 +15,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
 import { LoginContext } from '../App'
 import { useState, useContext } from 'react';
+import axios from '../utils/axiosInstance';
 
 const pages = [
     { name: 'Manage', url: '/managepassword' }
@@ -24,7 +25,8 @@ const settings = [
     { name: 'Logout', url: '/' }
 ];
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar(props) {
+    const { clearPreviousRefreshCountdown } = props;
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const { setIsLogin } = useContext(LoginContext);
@@ -43,6 +45,8 @@ function ResponsiveAppBar() {
     const handleClickUserMenu = (menuItem) => {
         if (menuItem === 'Logout') {
             setIsLogin(false)
+            delete axios.defaults.headers.common["Authorization"]
+            clearPreviousRefreshCountdown()
         }
         handleCloseUserMenu()
     }
