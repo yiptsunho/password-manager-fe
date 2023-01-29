@@ -163,13 +163,14 @@ function GeneratePassword() {
         if (!preference.allowDuplicate) {
             if (Object.values(acceptChars).filter(char => char).length === 1 && preference.length > 26 && (preference.uppercase || preference.lowercase)) {
                 isValid = false;
-                errMsg = 'If you wish to have no duplicate characters in your password and only uppercase or lowercase, the password length must be smaller than or equal to 26';
-            }
-            if (Object.values(acceptChars).filter(char => char).length === 1 && preference.length > 10 && (preference.number || preference.symbol)) {
+                errMsg = 'If you wish to have no duplicate characters in your password and only uppercase or lowercase letters, the password length must be smaller than or equal to 26';
+            } else if (Object.values(acceptChars).filter(char => char).length === 1 && preference.length > 10 && preference.number) {
                 isValid = false;
-                errMsg = 'If you wish to have no duplicate characters in your password and only number or symbol, the password length must be smaller than or equal to 10';
-            }
-            if (Object.values(acceptChars).filter(char => char).length === 2 && preference.length > 20 && preference.number && preference.symbol) {
+                errMsg = 'If you wish to have no duplicate characters in your password and only numbers, the password length must be smaller than or equal to 10';
+            } else if (Object.values(acceptChars).filter(char => char).length === 1 && preference.length > 26 && preference.symbol) {
+                isValid = false;
+                errMsg = 'If you wish to have no duplicate characters in your password and only symbols, the password length must be smaller than or equal to 26';
+            } else if (Object.values(acceptChars).filter(char => char).length === 2 && preference.length > 20 && preference.number && preference.symbol) {
                 isValid = false;
                 errMsg = 'If you wish to have no duplicate characters in your password  with only number and symbol, the password length must be smaller than or equal to 20';
             }
