@@ -14,7 +14,7 @@ export async function login(params, setState, navigate, setOpenDialog, refreshTo
         setState(true)
         window.sessionStorage.setItem('userId', responseData.data.userId)
         window.sessionStorage.setItem('displayName', responseData.data.displayName)
-        axios.defaults.headers.common['Authorization'] = `Bearer ${responseData.data.token}`;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${responseData.data.accessToken}`;
         refreshToken.current = responseData.data.refreshToken
         navigate('/landing')
     } else {
@@ -23,7 +23,8 @@ export async function login(params, setState, navigate, setOpenDialog, refreshTo
 
 }
 
-export async function refreshSession(params, navigate, refreshToken) {
+export async function refreshSession(params, navigate, refreshToken, setIsLogin) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${params.refreshToken}`;
     let responseData = null;
 
     try {
@@ -33,12 +34,14 @@ export async function refreshSession(params, navigate, refreshToken) {
     }
 
     if (responseData && responseData.status === 200) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${responseData.data.token}`;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${responseData.data.accessToken}`;
         refreshToken.current = responseData.data.refreshToken
-        window.location.reload(false)
+        // window.location.reload(false)
     } else {
+        delete axios.defaults.headers.common["Authorization"]
         window.sessionStorage.clear()
         navigate('/')
+        setIsLogin(false)
     }
 
 }
