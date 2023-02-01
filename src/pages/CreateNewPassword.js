@@ -37,7 +37,6 @@ function CreateNewPassword(props) {
                     },
                     setPasswords: setPasswords
                 })
-            console.log(`Creating new password with appName = ${appName}, loginId = ${loginId}, password = ${password}, category = ${category},`)
             navigate('/managepassword')
 
         } else {

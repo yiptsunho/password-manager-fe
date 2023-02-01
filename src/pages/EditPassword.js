@@ -38,7 +38,6 @@ function EditPassword({ props }) {
                         userId: userId
                     }
                 })
-            console.log(`Editing password to appName = ${appName}, loginId = ${loginId}, password = ${password}, category = ${category},`)
             navigate('/managepassword')
 
         } else {
