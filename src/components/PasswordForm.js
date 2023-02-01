@@ -11,10 +11,6 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 function PasswordForm(props) {
     const { data, handleSubmit, formTitle } = props;
-    // const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    // const onSubmit = data => console.log(data);
-
-    // console.log(watch("example")); // watch input value by passing the name of it
     const categoryList = [
         {
             value: 'work',
