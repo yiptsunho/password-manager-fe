@@ -372,6 +372,7 @@ function GeneratePassword() {
                         fullWidth
                         id='password'
                         value={password}
+                        sx={{ mt: 3, mb: 2 }}
                         InputProps={{
                             endAdornment:
                                 <InputAdornment position="end" >
