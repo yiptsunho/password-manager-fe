@@ -23,7 +23,7 @@ export async function login(params, setState, navigate, setOpenDialog, refreshTo
 
 }
 
-export async function refreshSession(params, navigate, refreshToken, setIsLogin, clearPreviousRefreshCountdown) {
+export async function refreshSession(params, navigate, refreshToken, setIsLogin) {
     axios.defaults.headers.common['Authorization'] = `Bearer ${params.refreshToken}`;
     let responseData = null;
 
@@ -36,13 +36,11 @@ export async function refreshSession(params, navigate, refreshToken, setIsLogin,
     if (responseData && responseData.status === 200) {
         axios.defaults.headers.common['Authorization'] = `Bearer ${responseData.data.accessToken}`;
         refreshToken.current = responseData.data.refreshToken
-        // window.location.reload(false)
     } else {
         delete axios.defaults.headers.common["Authorization"]
         window.sessionStorage.clear()
         navigate('/')
         setIsLogin(false)
-        clearPreviousRefreshCountdown()
     }
 
 }

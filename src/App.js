@@ -6,7 +6,7 @@ import Landing from './pages/Landing';
 import ManagePassword from './pages/ManagePassword';
 import MyAccount from './pages/MyAccount';
 import Login from './pages/Login';
-import React, { createContext, useState, useRef } from 'react';
+import React, { createContext, useState, useRef, useEffect } from 'react';
 import ForgetPassword from './pages/ForgetPassword';
 import CreateNewAccount from './pages/CreateNewAccount';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -31,25 +31,39 @@ function App() {
   const [openDialog, setOpenDialog] = useState(false)
   const refreshToken = useRef('')
   const navigate = useNavigate()
+  const diff = 1000 * 60 * 1
 
-  const refreshCountdown = setInterval(() => {
-    handleOpenRefreshDialog()
-  }, 1000 * 60 * 1);
+  useEffect(() => {
 
-  const clearPreviousRefreshCountdown = () => {
-    clearInterval(refreshCountdown)
-  }
+    if (isLogin) {
+      window.lastMove = new Date().getTime();
+      document.onmousemove = () => {
+        window.lastMove = new Date().getTime();
+      }
 
-  const handleOpenRefreshDialog = () => {
-    setOpenDialog(true)
-  }
+      const autoRefreshToken = setInterval(() => {
+        if (!openDialog) {
+          refreshToken();
+        }
+      }, 1000 * 60 * 10);
+
+      const timeOut = setInterval(() => {
+        let now = new Date().getTime();
+        if ((now - window.lastMove) > diff && isLogin) {
+          setOpenDialog(true)
+          clearInterval(timeOut);
+          clearInterval(autoRefreshToken);
+        }
+      }, 1000);
+    }
+
+  }, [isLogin, openDialog, refreshToken])
 
   const handleClickLogout = () => {
     delete axios.defaults.headers.common["Authorization"]
     setIsLogin(false)
     navigate('/')
     setOpenDialog(false)
-    clearPreviousRefreshCountdown()
   }
 
   const handleClickRefresh = () => {
@@ -59,16 +73,15 @@ function App() {
       password: "123456"
     }
 
-    refreshSession(params, navigate, refreshToken, setIsLogin, clearPreviousRefreshCountdown)
+    refreshSession(params, navigate, refreshToken, setIsLogin)
     setOpenDialog(false)
-    clearPreviousRefreshCountdown()
   }
 
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <LoginContext.Provider value={{ isLogin: isLogin, setIsLogin: setIsLogin, refreshToken: refreshToken }}>
-        {isLogin ? <NavBar clearPreviousRefreshCountdown={clearPreviousRefreshCountdown} /> : null}
+        {isLogin ? <NavBar /> : null}
         <Routes>
           <Route exact path="/" element={<Login />} />
           <Route exact path="/landing" element={<Landing handleClickRefresh={handleClickRefresh} />} />
@@ -83,8 +96,8 @@ function App() {
           open={openDialog}
           setOpen={setOpenDialog}
           title='Timeout'
-          content='Please refresh your token to stay logged in'
-          rightLabel='Refresh token'
+          content='Click refresh to stay logged in'
+          rightLabel='Refresh'
           rightAction={handleClickRefresh}
           leftLabel='Logout'
           leftAction={handleClickLogout}
