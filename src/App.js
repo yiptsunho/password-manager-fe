@@ -67,11 +67,7 @@ function App() {
   }
 
   const handleClickRefresh = () => {
-    const params = {
-      refreshToken: refreshToken.current,
-      loginId: "thyipac@connect.ust.hk",
-      password: "123456"
-    }
+    const params = {} // dummy params
 
     refreshSession(params, navigate, refreshToken, setIsLogin)
     setOpenDialog(false)
