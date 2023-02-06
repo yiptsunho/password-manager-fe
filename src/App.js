@@ -53,11 +53,7 @@ function App() {
   }
 
   const handleClickRefresh = () => {
-    const params = {
-      refreshToken: refreshToken.current,
-      loginId: "thyipac@connect.ust.hk",
-      password: "123456"
-    }
+    const params = {}
 
     refreshSession(params, navigate, refreshToken, setIsLogin, clearPreviousRefreshCountdown)
     setOpenDialog(false)
