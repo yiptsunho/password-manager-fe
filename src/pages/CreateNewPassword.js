@@ -37,7 +37,6 @@ function CreateNewPassword(props) {
                     },
                     setPasswords: setPasswords
                 })
-            console.log(`Creating new password with appName = ${appName}, loginId = ${loginId}, password = ${password}, category = ${category},`)
             navigate('/managepassword')
 
         } else {
@@ -54,7 +53,7 @@ function CreateNewPassword(props) {
         let errMsg = ''
         const { appName, loginId, password, category } = passwordProfile
 
-        if (!appName || !loginId || !password || !category) {
+        if (!appName.trim() || !loginId.trim() || !password.trim() || !category.trim()) {
             isValid = false
             errMsg = 'Please input all mandatory field(s)'
         }

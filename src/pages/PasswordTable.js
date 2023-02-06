@@ -129,7 +129,6 @@ function PasswordTable(props) {
                 }
             })
         setOpenDialog(false)
-        console.log(`Delete password with id = ${id},`)
         window.location.reload(false)
     }
 

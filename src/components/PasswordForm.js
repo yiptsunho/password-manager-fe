@@ -11,10 +11,6 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 function PasswordForm(props) {
     const { data, handleSubmit, formTitle } = props;
-    // const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    // const onSubmit = data => console.log(data);
-
-    // console.log(watch("example")); // watch input value by passing the name of it
     const categoryList = [
         {
             value: 'work',
@@ -121,18 +117,18 @@ function PasswordForm(props) {
                                 name="password"
                                 helperText="Scroll down to use our custom password generator"
                                 value={form.password}
-                                InputProps={{
-                                    endAdornment:
-                                        <InputAdornment position="end" >
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickVisibility}
-                                                edge="end"
-                                            >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                }}
+                            // InputProps={{
+                            //     endAdornment:
+                            //         <InputAdornment position="end" >
+                            //             <IconButton
+                            //                 aria-label="toggle password visibility"
+                            //                 onClick={handleClickVisibility}
+                            //                 edge="end"
+                            //             >
+                            //                 {showPassword ? <VisibilityOff /> : <Visibility />}
+                            //             </IconButton>
+                            //         </InputAdornment>
+                            // }}
                             />
                         </Grid>
                     </Grid>
@@ -165,13 +161,19 @@ function PasswordForm(props) {
                         <Button
                             fullWidth
                             variant="contained"
-                            onClick={handleReset}>Reset</Button>
+                            onClick={handleReset}
+                        >
+                            Reset
+                        </Button>
                     </Grid>
                     <Grid item md={3}>
                         <Button
                             fullWidth
                             variant="contained"
-                            onClick={() => handleSubmit(form)}>Submit</Button>
+                            onClick={() => handleSubmit(form)}
+                        >
+                            Submit
+                        </Button>
                     </Grid>
                 </Grid>
             </Grid>

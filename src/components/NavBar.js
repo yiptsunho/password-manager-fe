@@ -25,8 +25,7 @@ const settings = [
     { name: 'Logout', url: '/' }
 ];
 
-function ResponsiveAppBar(props) {
-    const { clearPreviousRefreshCountdown } = props;
+function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
     const { setIsLogin } = useContext(LoginContext);
@@ -46,7 +45,6 @@ function ResponsiveAppBar(props) {
         if (menuItem === 'Logout') {
             setIsLogin(false)
             delete axios.defaults.headers.common["Authorization"]
-            clearPreviousRefreshCountdown()
         }
         handleCloseUserMenu()
     }
