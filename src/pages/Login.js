@@ -56,7 +56,9 @@ function Login(props) {
         setPassword(val)
     }
 
-    const handleSubmit = (loginId, password) => {
+    const handleSubmit = (event) => {
+
+        event.preventDefault()
         const params = {
             loginId: loginId,
             password: password
@@ -78,7 +80,7 @@ function Login(props) {
                         alignItems: 'center',
                     }}
                 >
-                    <form onSubmit={() => handleSubmit(loginId, password)}>
+                    <form onSubmit={handleSubmit}>
                         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                             <LockOutlinedIcon />
                         </Avatar>
@@ -119,7 +121,7 @@ function Login(props) {
                                 variant="contained"
                                 type="submit"
                                 sx={{ mt: 3, mb: 2 }}
-                                onClick={() => handleSubmit(loginId, password)}
+                                onClick={handleSubmit}
                             >
                                 Sign In
                             </Button>
