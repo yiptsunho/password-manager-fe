@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
-import { Box, Grid, Typography, TextField } from '@mui/system';
+import { Button, Grid, Paper, Typography, TextField, MenuItem, Box } from '@mui/material';
+import * as _ from 'lodash';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Navigate, useNavigate } from 'react-router-dom';
 
-function UserForm() {
+function UserForm(props) {
     const { data, handleSubmit, formTitle } = props;
     const [form, setForm] = useState(data ?? {
         loginId: '',
@@ -9,6 +15,7 @@ function UserForm() {
         displayName: ''
     });
     const [showPassword, setShowPassword] = useState(false)
+    const navigate = useNavigate()
 
     const handleChange = (fieldName, value) => {
         let newData = _.cloneDeep(form)
@@ -18,16 +25,19 @@ function UserForm() {
 
     const handleReset = () => {
         setForm({
-            appName: '',
             loginId: '',
             password: '',
-            category: ''
+            displayName: ''
         });
         setShowPassword(false)
     }
 
     const handleClickVisibility = () => {
         setShowPassword(!showPassword)
+    }
+
+    const handleBack = () => {
+        navigate("/")
     }
 
 
@@ -56,6 +66,7 @@ function UserForm() {
                                 onChange={(e) => handleChange(e.target.name, e.target.value)}
                                 name="loginId"
                                 value={form.loginId}
+                                helperText={data ?? "Please use a valid email address as your loginId"}
                             />
                         </Grid>
                     </Grid>
@@ -72,20 +83,20 @@ function UserForm() {
                                 type={showPassword ? 'text' : 'password'}
                                 onChange={(e) => handleChange(e.target.name, e.target.value)}
                                 name="password"
-                                helperText="Scroll down to use our custom password generator"
+                                helperText={data ?? "Scroll down to use our custom password generator"}
                                 value={form.password}
-                                InputProps={{
-                                    endAdornment:
-                                        <InputAdornment position="end" >
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={handleClickVisibility}
-                                                edge="end"
-                                            >
-                                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                                            </IconButton>
-                                        </InputAdornment>
-                                }}
+                            // InputProps={{
+                            //     endAdornment:
+                            //         <InputAdornment position="end" >
+                            //             <IconButton
+                            //                 aria-label="toggle password visibility"
+                            //                 onClick={handleClickVisibility}
+                            //                 edge="end"
+                            //             >
+                            //                 {showPassword ? <VisibilityOff /> : <Visibility />}
+                            //             </IconButton>
+                            //         </InputAdornment>
+                            // }}
                             />
                         </Grid>
                     </Grid>
@@ -102,7 +113,7 @@ function UserForm() {
                                 onChange={(e) => handleChange(e.target.name, e.target.value)}
                                 name="displayName"
                                 value={form.displayName}
-                                helperText="This will be shown as your username"
+                                helperText={data ?? "This will be shown as your username"}
                             />
                         </Grid>
                     </Grid>
@@ -112,13 +123,28 @@ function UserForm() {
                         <Button
                             fullWidth
                             variant="contained"
-                            onClick={handleReset}>Reset</Button>
+                            onClick={handleBack}
+                        >
+                            Back
+                        </Button>
                     </Grid>
                     <Grid item md={3}>
                         <Button
                             fullWidth
                             variant="contained"
-                            onClick={() => handleSubmit(form)}>Submit</Button>
+                            onClick={handleReset}
+                        >
+                            Reset
+                        </Button>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Button
+                            fullWidth
+                            variant="contained"
+                            onClick={() => handleSubmit(form)}
+                        >
+                            Submit
+                        </Button>
                     </Grid>
                 </Grid>
             </Grid>

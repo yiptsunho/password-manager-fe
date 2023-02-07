@@ -74,7 +74,8 @@ function App() {
   }
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    // <ThemeProvider theme={darkTheme}>
+    <>
       <CssBaseline />
       <LoginContext.Provider value={{ isLogin: isLogin, setIsLogin: setIsLogin, refreshToken: refreshToken }}>
         {isLogin ? <NavBar /> : null}
@@ -99,7 +100,8 @@ function App() {
           leftAction={handleClickLogout}
         />
       </LoginContext.Provider>
-    </ThemeProvider >
+    </>
+    // </ThemeProvider >
   );
 }
 

@@ -13,6 +13,10 @@ export const PASSWORD = {
     WARNING: 'Warning'
 }
 
+export const USER = {
+    WARNING: 'Warning'
+}
+
 export const CHAR = {
     UPPERCASE: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
     LOWERCASE: "abcdefghijklmnopqrstuvwxyz",
