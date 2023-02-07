@@ -1,5 +1,7 @@
-import { Button } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import React from 'react';
+import CustomButton from '../components/CustomButton';
+import { CssBaseline } from '@mui/material';
 
 function Landing(props) {
     const { handleClickRefresh } = props;
@@ -7,6 +9,7 @@ function Landing(props) {
     return (
         <div className="App-header dark">
             <div className="container">
+                <CssBaseline />
                 <h1>This is the landing page</h1>
                 <Button
                     fullWidth
@@ -16,6 +19,17 @@ function Landing(props) {
                 >
                     Refresh my token
                 </Button>
+                <Grid container spacing={2}>
+                    <CustomButton
+                        fullWidth={true}
+                        onClick={() => console.log('button clicked')}
+                        description={'Refresh my token'}
+                    />
+                    <CustomButton
+                        onClick={() => console.log('button clicked')}
+                        description={'Submit'}
+                    />
+                </Grid>
             </div>
         </div>
     )
