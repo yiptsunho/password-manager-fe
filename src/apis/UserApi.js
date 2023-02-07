@@ -23,8 +23,8 @@ export async function login(params, setState, navigate, setOpenDialog, refreshTo
 
 }
 
-export async function refreshSession(params, navigate, refreshToken, setIsLogin) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${params.refreshToken}`;
+export async function refreshSession(params, navigate, refreshToken, setIsLogin, clearPreviousRefreshCountdown) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${refreshToken.current}`;
     let responseData = null;
 
     try {

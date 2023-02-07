@@ -56,7 +56,9 @@ function Login(props) {
         setPassword(val)
     }
 
-    const handleSubmit = (loginId, password) => {
+    const handleSubmit = (event) => {
+
+        event.preventDefault()
         const params = {
             loginId: loginId,
             password: password
@@ -78,68 +80,71 @@ function Login(props) {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
-                    <Box component="form" noValidate sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                            value={loginId}
-                            onChange={(e) => handleChangeLoginId(e.target.value)}
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            value={password}
-                            onChange={(e) => handleChangePassword(e.target.value)}
-                        />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                            onClick={() => handleSubmit(loginId, password)}
-                        >
-                            Sign In
-                        </Button>
-                        <Grid container>
-                            <Grid item xs>
-                                <Link href="/forgotpassword" variant="body2">
-                                    Forgot password?
-                                </Link>
+                    <form onSubmit={handleSubmit}>
+                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Sign in
+                        </Typography>
+                        <Box component="form" noValidate sx={{ mt: 1 }}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                                value={loginId}
+                                onChange={(e) => handleChangeLoginId(e.target.value)}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                value={password}
+                                onChange={(e) => handleChangePassword(e.target.value)}
+                            />
+                            <FormControlLabel
+                                control={<Checkbox value="remember" color="primary" />}
+                                label="Remember me"
+                            />
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                type="submit"
+                                sx={{ mt: 3, mb: 2 }}
+                                onClick={handleSubmit}
+                            >
+                                Sign In
+                            </Button>
+                            <Grid container>
+                                <Grid item xs>
+                                    <Link href="/forgotpassword" variant="body2">
+                                        Forgot password?
+                                    </Link>
+                                </Grid>
+                                <Grid item>
+                                    <Link href="/createnewaccount" variant="body2">
+                                        {"Don't have an account? Sign Up"}
+                                    </Link>
+                                </Grid>
                             </Grid>
-                            <Grid item>
-                                <Link href="/createnewaccount" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
-                        <CustomDialog
-                            open={openDialog}
-                            setOpen={setOpenDialog}
-                            title={dialogTitle.current}
-                            content={dialogContent.current}
-                        />
-                    </Box>
+                            <CustomDialog
+                                open={openDialog}
+                                setOpen={setOpenDialog}
+                                title={dialogTitle.current}
+                                content={dialogContent.current}
+                            />
+                        </Box>
+                    </form>
                 </Box>
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
