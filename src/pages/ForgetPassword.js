@@ -5,16 +5,12 @@ import Typography from '@mui/material/Typography';
 
 function ForgetPassword() {
 
-    const theme = createTheme();
-
     return (
-        <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-                <Typography component="h1" variant="h5">
-                    This is the forget password page
-                </Typography>
-            </Container>
-        </ThemeProvider>
+        <div className="App-header">
+            <div className="container">
+                <h1>This is the forget password page</h1>
+            </div>
+        </div>
     )
 }
 
