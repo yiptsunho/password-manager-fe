@@ -55,14 +55,18 @@ export async function createNewAccount(params, setOpenDialog, dialogTitle, dialo
     }
 
     if (responseData && responseData.status === 200) {
-        dialogTitle.current = responseData.status
-        dialogContent.current = responseData.message
-        dialogRightAction.current = navigate('/landing')
+        dialogTitle.current = 'Success'
+        dialogContent.current = 'Account created'
+        // dialogTitle.current = responseData.status
+        // dialogContent.current = responseData.message
+        dialogRightAction.current = navigate('/')
         setOpenDialog(true)
     } else {
-        dialogTitle.current = responseData.status
-        dialogContent.current = responseData.message
-        dialogRightAction.current = ''
+        dialogTitle.current = 'Error'
+        dialogContent.current = 'Account creation failed, please try again'
+        // dialogTitle.current = responseData.status
+        // dialogContent.current = responseData.message
+        dialogRightAction.current = () => setOpenDialog(false)
         setOpenDialog(true)
     }
 
